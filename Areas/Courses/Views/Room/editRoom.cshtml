@@ -1,0 +1,135 @@
+﻿
+@{
+    ViewBag.Title = Model.TenLop;
+    ViewBag.Main = "Chỉnh sửa lớp học";
+    Layout = "~/Views/Shared/_LayoutArea.cshtml";
+    var roomImg = "";
+    var maUser = User.Claims.First().Value;
+    if (Model.ImgBia == null) { roomImg = "cover-default.jpg"; }
+    else { roomImg = Model.ImgBia; }
+}
+@model LopHoc
+@using DayHocTrucTuyen.Models.Entities
+
+<section id="head-room-detail" style="background-image: url(/Content/Img/roomCover/@roomImg);">
+    <div class="gap2">
+        <div class="container-fluid">
+            <div class="row room-title">
+                <div class="col-lg-6 col-md-8">
+                    <div class="employer-info">
+                        <h2 id="viewroom-Name" title="@Model.MaLop"><b>@Model.TenLop</b></h2>
+                        <i>@Model.getMembers() thành viên</i>
+                        <h4><a href="~/profile/info/@Model.getOwner().MaNd">@Model.getOwner().getFullName()</a> là giáo viên</h4>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-4">
+                    <div class="salary-area">
+                        @foreach (var t in Model.getTag())
+                        {
+                                <span>@t.TenTag</span>
+                        }
+                        <br />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="gap2 gray-bg">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row merged20" id="page-contents">
+                        
+                        <!-- Menu left-->
+                        @await Html.PartialAsync("~/Views/Shared/Menu/_RoomMenuLeft.cshtml", Model)
+
+                        <!-- Edit content -->
+                        <div class="col-lg-6">
+                            <div class="central-meta">
+                                <div id="edit-profile">
+                                    <div class="setting-meta">
+                                        <figure>
+                                            <img id="img-bg-room" src="@Model.getImage()" alt="" />
+                                        </figure>
+                                        <div class="edit-img">
+                                            <div class="edit-phto">
+                                                <label class="fileContainer">
+                                                    <i class="fa fa-camera-retro"></i>
+                                                    <span id="lbl-img-room" style="text-transform:none">Chưa có ảnh nào được chọn</span>
+                                                    <input id="img-room" type="file" accept=".jpg, .png, .jpeg">
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="stg-form-area">
+                                        <form method="post" class="c-form" id="form-edit-room" enctype="multipart/form-data">
+                                            <div>
+                                                <label>Tên lớp</label>
+                                                <input class="form-edit-room" type="text" required maxlength="40" placeholder="Lập trình web" value="@Model.TenLop" />
+                                            </div>
+                                            <div>
+                                                <label>Bí danh</label>
+                                                <input class="form-edit-room" type="text" pattern="[a-z|-]{1,20}" maxlength="20" placeholder="laptrinhweb" value="@Model.BiDanh" />
+                                            </div>
+                                            <div>
+                                                <label>Giá Tiền</label>
+                                                <input class="form-edit-room formatNumber" id="editRoomGiaTien" type="text" required placeholder="Nhập giá tiền..." maxlength="8" name="number" value="@Model.GiaTien" />
+                                            </div>
+                                            <div>
+                                                <label>Mô Tả</label>
+                                                <textarea class="form-edit-room" rows="3" maxlength="300" placeholder="Mô tả lớp học">@Model.MoTa</textarea>
+                                            </div>
+                                            <div>
+                                                <label>Thẻ</label>
+                                                <select id="room-edit-tag" multiple name="native-select" placeholder="Chọn chủ đề cho lớp" data-search="true" data-silent-initial-value-set="true" data-max-values="2">
+                                                    @foreach (var tag in ViewData["Tag"] as List<Tag>)
+                                                    {
+                                                        if (Model.isTag(tag.MaTag))
+                                                        {
+                                                            <option selected value="@tag.MaTag">@tag.TenTag</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@tag.MaTag">@tag.TenTag</option>
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <button class="main-btn" type="submit" data-ripple="">Lưu lại</button>
+                                                <button class="main-btn cancel" type="button" data-ripple="" onclick="editRoomCanel('@Model.MaLop')">Hủy</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Menu right-->
+                        @await Html.PartialAsync("~/Views/Shared/Menu/_RoomMenuRight.cshtml", Model)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section><!-- content -->
+
+@section ChildScript{
+    <script>
+        //Xử lý lấy tên thẻ vào select box
+        VirtualSelect.init({
+            ele: '#room-edit-tag',
+            multiple: true,
+            disableSelectAll: true,
+            searchPlaceholderText: 'Tìm kiếm...',
+            noOptionsText: 'Không có dữ liệu',
+            noSearchResultsText: 'Không có kết quả hợp lệ',
+            showValueAsTags: true,
+            clearButtonText: 'Xóa',
+            optionsCount: 5
+        });
+    </script>
+}
