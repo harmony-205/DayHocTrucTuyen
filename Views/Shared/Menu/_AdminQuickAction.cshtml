@@ -1,0 +1,55 @@
+﻿
+<div class="col-lg-3">
+    <aside class="sidebar static right">
+        <div class="widget">
+            <h4 class="widget-title">Thao tác nhanh</h4>
+            <ul class="naves">
+                <li>
+                    <i class="ti-home"></i>
+                    <a href="/" title="">Trang chủ</a>
+                </li>
+                <li class="@ViewBag.UserList">
+                    <i class="ti-layout-list-thumb"></i>
+                    <a href="~/admin/user/list" title="">QL người dùng</a>
+                </li>
+                <li class="@ViewBag.RoomList">
+                    <i class="ti-layout-list-thumb"></i>
+                    <a href="~/admin/room/list" title="">QL lớp học</a>
+                </li>
+                <li class="@ViewBag.Approve">
+                    <i class="ti-layout-list-thumb"></i>
+                    <a href="~/admin/user/approve" title="">Phê duyệt giáo viên</a>
+                </li>
+                <li class="@ViewBag.ReportList">
+                    <i class="ti-comment-alt"></i>
+                    <a href="~/admin/room/report" title="">Phản hồi - Báo cáo</a>
+                </li>
+                 <li class="@ViewBag.GiveMoney">
+                    <i class="ti-comment-alt"></i>
+                    <a href="~/admin/user/givemoney" title="">Chuyển tiền người dùng</a>
+                </li>
+                <li>
+                    <i class="ti-bell"></i>
+                    <a href="~/user/notification/detail" title="">Thông báo</a>
+                </li>
+            </ul>
+        </div><!-- Thao tác nhanh -->
+        <div class="widget">
+            <h4 class="widget-title">Xem thêm</h4>
+            <ul class="naves">
+                <li>
+                    <i class="fa fa-bar-chart-o"></i>
+                    <a href="" title="">Biểu đồ</a>
+                </li>
+                <li>
+                    <i class="ti-help"></i>
+                    <a href="" title="">Trợ giúp</a>
+                </li>
+                <li>
+                    <i class="ti-power-off"></i>
+                    <a onclick="dangxuat()" href="#" title="">Đăng xuất</a>
+                </li>
+            </ul>
+        </div><!-- Xem thêm -->
+    </aside>
+</div><!-- Thanh trái -->

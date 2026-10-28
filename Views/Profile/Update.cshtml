@@ -1,0 +1,121 @@
+﻿@model NguoiDung
+@using DayHocTrucTuyen.Models.Entities
+@{
+    ViewBag.Title = "Cập nhật thông tin";
+    ViewBag.Main = "Hồ sơ: " + Model.getFullName();
+    Layout = "~/Views/Shared/_LayoutArea.cshtml";
+}
+
+<section>
+    <div class="gap2 gray-bg">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <div class="account-settings">
+                                <div class="user-profile text-center">
+                                    <div class="user-avatar">
+                                        <img src="@Model.getImageAvt()" alt="@Model.getFullName()">
+                                    </div>
+                                    <h5>@Model.getFullName()</h5>
+                                    <h6>@Model.getTenLoai()</h6>
+                                </div>
+                                <div>
+                                    <h5>Giới thiệu</h5>
+                                    <p>@Model.getIntro()</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <div class="row">
+                                <form id="frm-update-user" method="post" class="c-form">
+                                    <div class="form-row ml-1 mr-1">
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                            <h6 class="mb-2 text-primary">Thông tin cá nhân</h6>
+                                        </div>
+                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 mb-3">
+                                            <label>Họ lót</label>
+                                            <input class="pt-1 inp-update-user" type="text" maxlength="20" placeholder="Nhập họ lót..." value="@Model.HoLot" />
+                                        </div>
+                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 mb-3">
+                                            <label>Tên <span class="text-danger">*</span></label>
+                                            <input class="pt-1 inp-update-user" type="text" required maxlength="70" placeholder="Nhập tên..." value="@Model.Ten" />
+                                        </div>
+                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 mb-3">
+                                            <label>Ngày sinh <span class="text-danger">*</span></label>
+                                            @{DateTime tempNS = Model.NgaySinh ?? DateTime.Now;}
+                                            <input class="pt-1 inp-update-user" type="date" required value="@tempNS.ToString("yyyy-MM-dd")" />
+                                        </div>
+                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 mb-3">
+                                            <label>Giới tính <span class="text-danger">*</span></label>
+                                            <select class="inp-update-user" required id="user-edit-gt" name="native-select" placeholder="Chọn giới tính" data-search="false" data-silent-initial-value-set="true" data-max-values="3">
+                                                @{
+                                                    string[] tempGT = new string[] {"Nam", "Nữ", "Khác"};
+                                                    for (var i = 0; i < tempGT.Length; i++)
+                                                    {
+                                                        int ss = i + 1;
+                                                        if (ss == Model.GioiTinh)
+                                                        {
+                                                            <option selected value="@ss">@tempGT[i]</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@ss">@tempGT[i]</option>
+                                                        }
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mt-3">
+                                            <h6 class="mb-2 text-primary">Thông tin bổ sung</h6>
+                                        </div>
+                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 mb-3">
+                                            <label>SĐT <span class="text-danger">*</span></label>
+                                            <input class="pt-1 inp-update-user" type="number" required placeholder="Nhập số điện thoại..." value="@Model.Sdt" onKeyPress="if(this.value.length==11) return false;" />
+                                        </div>
+                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 mb-3">
+                                            <label>Bí danh</label>
+                                            <input class="pt-1 inp-update-user" type="text" maxlength="20" placeholder="Nhập bí danh..." value="@Model.BiDanh" />
+                                        </div>
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-3">
+                                            <label>Mô tả</label>
+                                            <textarea class="pt-1 inp-update-user" maxlength="300" placeholder="Nhập mô tả..." rows="3">@Model.MoTa</textarea>
+                                        </div>
+                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 text-left">
+                                            <span><span class="text-danger">(*)</span> là bắt buộc nhập</span>
+                                        </div>
+                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                            <button class="main-btn" type="submit" data-ripple="">Lưu lại</button>
+                                            <button class="main-btn cancel" type="button" data-ripple="">Hủy</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section ChildScript{
+    <script>
+        //Xử lý lấy tên thẻ vào select box
+        VirtualSelect.init({
+            ele: '#user-edit-gt',
+            multiple: false,
+            disableSelectAll: true,
+            search: false,
+            noOptionsText: 'Không có dữ liệu',
+            showValueAsTags: true,
+            clearButtonText: 'Xóa',
+            optionsCount: 5
+        });
+    </script>
+}

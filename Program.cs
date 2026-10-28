@@ -1,7 +1,24 @@
+using DayHocTrucTuyen.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Add cookie authentication
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+{
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+    options.SlidingExpiration = true;
+    options.LoginPath = "/account/login";
+    options.LogoutPath = "/account/login";
+    options.AccessDeniedPath = "/access/denied";
+});
+
+// Using custom authen role
+builder.Services.AddScoped<IAuthorizationHandler, RolesAuthorizationHandler>();
 
 var app = builder.Build();
 
@@ -13,17 +30,28 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+// Using custom status error
+app.UseStatusCodePagesWithReExecute("/error/{0}");
+
 app.UseHttpsRedirection();
+app.UseStaticFiles();
+
 app.UseRouting();
+
+// Using Authen cookie
+app.UseAuthentication();
 
 app.UseAuthorization();
 
-app.MapStaticAssets();
+// Config Map Route Areas
+app.MapAreaControllerRoute(
+    name: "MyAreas",
+    areaName: "Areas",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}");
 
+// Default Map Route
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
-    .WithStaticAssets();
-
+    pattern: "{controller=Account}/{action=Login}/{id?}");
 
 app.Run();

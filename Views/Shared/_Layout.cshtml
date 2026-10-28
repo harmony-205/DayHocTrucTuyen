@@ -1,50 +1,168 @@
-﻿<!DOCTYPE html>
+﻿@using DayHocTrucTuyen.Models
+@using DayHocTrucTuyen.Models.Entities
+@{
+    Layout = null;
+    NguoiDung uLogin = new NguoiDung();
+    if (User.Identity != null && User.Identity.IsAuthenticated)
+    {
+        uLogin = new NguoiDung().getNguoiDung(User.Claims.First().Value);
+    }
+}
+
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - DayHocTrucTuyen</title>
-    <script type="importmap"></script>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/DayHocTrucTuyen.styles.css" asp-append-version="true" />
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>@ViewBag.Title - Dạy Học Trực Tuyến</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="~/Content/Img/Resources/Logo.gif" rel="icon" asp-append-version="true" />
+    <link href="~/Content/Img/Resources/Logo.gif" rel="apple-touch-icon" asp-append-version="true" />
+
+    <!-- Google Fonts -->
+    <link href="~/Template/css/fonts.css" rel="stylesheet" asp-append-version="true" />
+
+    <!-- Vendor CSS Files -->
+    <link href="~/Template/animate.css/animate.min.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/Template/aos/aos.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/Template/bootstrap/css/bootstrap.min.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/Template/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/Template/boxicons/css/boxicons.min.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/Template/remixicon/remixicon.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/Template/swiper/swiper-bundle.min.css" rel="stylesheet" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Template/css/icon_style.css" asp-append-version="true" />
+
+    <!-- Template Main CSS File -->
+    <link href="~/Template/css/style.css" rel="stylesheet" asp-append-version="true" />
+
+    <!--Toastr thông báo-->
+    <link rel="stylesheet" href="~/Template/css/toastr.css" asp-append-version="true" />
+
+    <!-- Gợi ý và tự động điền cho form-->
+    <link rel="stylesheet" href="~/Template/css/search-room.css" asp-append-version="true" />
 </head>
+
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">DayHocTrucTuyen</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+    <!-- Loading animation -->
+    @await Html.PartialAsync("~/Views/Shared/_Loading.cshtml")
+
+    <!-- ======= Header ======= -->
+    <header id="header" class="fixed-top">
+        <div class="container d-flex align-items-center">
+            <a href="/" class="logo me-auto"><img src="~/Content/Img/Resources/Logo.gif" alt="" class="img-fluid"></a>
+            <nav id="navbar" class="navbar order-last order-lg-0">
+                <ul>
+                    <li><a class="@ViewBag.Index" href="/">Trang chủ</a></li>
+                    <li><a class="@ViewBag.ThongTin" href="">Thông tin</a></li>
+                    <li><a class="@ViewBag.KhoaHoc" href="~/default/courses">Khóa học</a></li>
+                    <li><a class="@ViewBag.SuKien" href="">Sự kiện</a></li>
+                    @*<li class="dropdown">
+                    <a href="#"><span>Drop Down</span> <i class="bi bi-chevron-down"></i></a>
+                    <ul>
+                    <li><a href="#">Drop Down 1</a></li>
+                    <li class="dropdown">
+                    <a href="#"><span>Deep Drop Down</span> <i class="bi bi-chevron-right"></i></a>
+                    <ul>
+                    <li><a href="#">Deep Drop Down 1</a></li>
+                    <li><a href="#">Deep Drop Down 2</a></li>
+                    <li><a href="#">Deep Drop Down 3</a></li>
+                    <li><a href="#">Deep Drop Down 4</a></li>
+                    <li><a href="#">Deep Drop Down 5</a></li>
                     </ul>
-                </div>
+                    </li>
+                    <li><a href="#">Drop Down 2</a></li>
+                    <li><a href="#">Drop Down 3</a></li>
+                    <li><a href="#">Drop Down 4</a></li>
+                    </ul>
+                    </li>*@
+                    <li><a class="@ViewBag.LienHe" href="~/default/contact">Liên hệ</a></li>
+                </ul>
+                <i class="bi bi-list mobile-nav-toggle"></i>
+            </nav><!-- .navbar -->
+            <div id="userSystem">
+                @if (User.Identity != null && !User.Identity.IsAuthenticated)
+                {
+                    <a href="~/account/register" class="get-started-a">Đăng ký</a>
+                    <a href="~/account/login" type="button" class="btn get-started-btn">Đăng nhập</a>
+                }
+                else
+                {
+                    <div class="dropdown">
+                        <a class="btn get-started-a dropdown-toggle" id="dropdownUser">
+                            Xin chào, @uLogin.Ten
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                @if (uLogin.MaLoai != null && uLogin.MaLoai.Equals("01"))
+                                {
+                                    <a href="~/admin/user/list" class="dropdown-item"><i class="bi bi-grid"> Admin</i></a>
+                                }
+                                <a href="~/user/manage/index" class="dropdown-item"><i class="bi bi-grid"> Trang quản trị</i></a>
+                                <button type="button" id="logoutAccount" class="dropdown-item text-danger" onclick="dangxuat()"><i class="bi bi-power"> Đăng xuất</i></button>
+                            </li>
+                        </ul>
+                    </div>
+                }
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+        </div>
+    </header><!-- End Header -->
+
+    <!-- popup record micro -->
+    <div class="call-wraper">
+        <div class="m-live-call">
+            <span title="Dừng lắng nghe" class="close-record"><i class="bi bi-x-lg"></i></span>
+            <div class="call-box">
+                <span class="text-record"></span>
+                <i class="bi bi-mic"></i>
+                <div class="wave">
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                </div>
+                <ins class="later-rmnd">Lệnh: "Dừng lại", "Làm mới".</ins>
+            </div>
+        </div>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - DayHocTrucTuyen - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    @RenderBody()
+    <!-- ======= Footer ======= -->
+    <footer id="footer">
+        <div class="container d-md-flex py-4">
+
+            <div class="me-md-auto text-center text-md-start">
+                <b>Triệu Nguyễn Khánh Băng</b>
+                <br />
+                B1809328
+            </div>
+            <div class="social-links text-center text-md-right pt-3 pt-md-0">
+                <a href="https://instagram.com/tnk_bang" class="instagram"><i class="bx bxl-instagram"></i></a>
+                <a href="https://fb.com/tnkbang" class="facebook"><i class="bx bxl-facebook"></i></a>
+                <a href="https://m.me/tnkbang" class="messenger"><i class="bx bxl-messenger"></i></a>
+                <a href="mailto:bangb1809328@student.ctu.edu.vn" class="google-plus"><i class="bx bx-mail-send"></i></a>
+                <a href="tel:+0833229121" class="phone"><i class="bx bx-phone-call"></i></a>
+            </div>
         </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+    </footer><!-- End Footer -->
+
+    <!-- Vendor JS Files -->
+    <script src="~/Template/js/purecounter.js" asp-append-version="true"></script>
+    <script src="~/Template/aos/aos.js" asp-append-version="true"></script>
+    <script src="~/Template/bootstrap/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
+    <script src="~/Template/swiper/swiper-bundle.min.js" asp-append-version="true"></script>
+
+    <!-- Template Main JS File -->
+    <script src="~/Template/js/main.min.js" asp-append-version="true"></script>
+    <script src="~/Template/js/main-custom.js" asp-append-version="true"></script>
+
+    <!--Toastr thông báo-->
+    <script src="~/Template/js/toastr.js" asp-append-version="true"></script>
+
+    <!-- Các section có trong view -->
+    @RenderSection("ChildScript", required:false)
 </body>
 </html>

@@ -1,0 +1,370 @@
+﻿
+@{
+    Layout = null;
+
+    var maUser = User.Claims.First().Value;
+    NguoiDung userAccount = new NguoiDung().getNguoiDung(maUser);
+    ThongBao thongbao = new ThongBao();
+    thongbao.MaNd = maUser;
+    TinNhan tinnhan = new TinNhan();
+}
+@using DayHocTrucTuyen.Models
+@using DayHocTrucTuyen.Models.Entities
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <title>@ViewBag.Title - Dạy Học Trực Tuyến</title>
+    <link rel="icon" href="~/Content/Img/Resources/Logo.gif" asp-append-version="true" />
+
+    <link rel="stylesheet" href="/Template/boxicons/css/boxicons.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Template/css/icon_style.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Template/css/main.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Template/css/nprogress.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Template/css/style_area.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Template/css/color.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Template/css/responsive.css" asp-append-version="true" />
+
+    <!--Thư viện select-->
+    <link rel="stylesheet" href="~/Template/css/virtual-select.min.css" asp-append-version="true" />
+    <script src="~/Template/js/virtual-select.min.js" asp-append-version="true"></script>
+
+    <!--Toastr thông báo-->
+    <link rel="stylesheet" href="~/Template/css/toastr.css" asp-append-version="true" />
+    
+    <!-- Gợi ý và tự động điền cho form-->
+    <link rel="stylesheet" href="~/Template/css/search-room.css" asp-append-version="true" />
+
+    <!-- style nhận về từ các cshtlm con -->
+    @RenderSection("ChildStyle", required:false)
+</head>
+<body>
+    <!-- Loading animation -->
+    @await Html.PartialAsync("~/Views/Shared/_Loading.cshtml")
+
+    <div class="theme-layout">
+
+        <div class="postoverlay"></div>
+
+        <div class="responsive-header">
+            <div class="mh-head first Sticky" style="background: #56bad1;">
+                <span class="mh-btns-left">
+                    <a class="" href="#menu"><i class="fa fa-align-justify"></i></a>
+                </span>
+                <span class="mh-text">
+                    <a title="" href="/"><img src="~/Content/Img/Resources/Logo.gif" alt="" style="width: 40px"></a>
+                </span>
+            </div>
+            <nav id="menu" class="res-menu">
+                <ul>
+                    <li><a href="/" title="">Trang chủ</a></li>
+                    <li>
+                        <span>Lớp học đã tham gia <span class="sl-room-join"></span></span>
+                        <ul>
+                            @if (userAccount.getJoinRoom() == 0)
+                            {
+                                <li>Bạn chưa tham gia lớp học nào!</li>
+                            }
+                            else 
+                            {
+                                foreach(var r in userAccount.getListJoin())
+                                {
+                                    <li class="ml-2 mr-2 mt-1 mb-1">
+                                        <ins class="mesg-meta mobi-msg">
+                                            <img class="wh-35" src="@r.getImage()" alt="@r.TenLop" />
+                                            <h6><a class="text-none" href="~/courses/room/detail/@r.MaLop" title="Đi đến lớp @r.TenLop">@r.TenLop</a></h6>
+                                            <span class="text-none"><b>@r.getOwner().Ten</b> là giáo viên</span>
+                                            <i class="add-del-friends fa fa-group"></i>
+                                            <i class="text-none">@r.getMembers() thành viên</i>
+                                        </ins>
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    </li>
+                    <li>
+                        <span>Tin nhắn <span class="mobi-sl-ping-mess"></span></span>
+                        <ul id="mobi-menu-ping-mess"></ul>
+                    </li>
+                    <li><a href="~/user/notification/detail" title="">Thông báo</a></li>
+                </ul>
+            </nav>
+        </div><!-- responsive header -->
+
+        <div class="topbar stick">
+            <div class="logo">
+                <a title="Trở về trang chủ" href="/"><img src="~/Content/Img/Resources/Logo.gif" alt="" style="width: 40px"></a>
+            </div>
+            <div class="top-area">
+                <div class="page-name">
+                    <span>@ViewBag.Main</span>
+                </div>
+                <ul class="setting-area">
+                    <li>
+                        <a href="" title="Lớp học" data-ripple="">
+                            <i class="fa fa-group"></i><em class="bg-purple">@userAccount.getJoinRoom()</em>
+                        </a>
+                        @if (userAccount.getJoinRoom() == 0)
+                        {
+                            <div class="dropdowns">
+                                <span>Bạn chưa tham gia lớp học nào</span>
+                                <a href="~/default/courses" title="Danh sách lớp học" class="more-mesg">Tìm lớp học ngay</a>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="dropdowns">
+                                <span>Bạn tham gia @userAccount.getJoinRoom() lớp học</span>
+                                <ul class="drops-menu">
+                                    @foreach (var r in userAccount.getListJoin())
+                                    {
+                                        <li>
+                                            <div>
+                                                <figure>
+                                                    <img class="wh-35" src="@r.getImage()" alt="@r.TenLop" />
+                                                </figure>
+                                                <div class="mesg-meta">
+                                                    <h6><a href="~/courses/room/detail/@r.MaLop" title="Đi đến lớp @r.TenLop">@r.TenLop</a></h6>
+                                                    <span><b>@r.getOwner().Ten</b> là giáo viên</span>
+                                                    <i>@r.getMembers() thành viên</i>
+                                                </div>
+                                                <div class="add-del-friends">
+                                                    <i class="fa fa-group"></i>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    }
+                                </ul>
+                                <a href="~/courses/room/list" title="Danh sách lớp tham gia" class="more-mesg">Xem tất cả</a>
+                            </div>
+                        }
+                    </li>
+                    <li>
+                        @if(thongbao.getSLThongBaoChuaXem() == 0)
+                        {
+                            <a href="#" title="Thông báo" data-ripple="">
+                                <i class="fa fa-bell"></i>
+                            </a>
+                            <div class="dropdowns">
+                                <span>Hiện không có thông báo mới nào!</span>
+                                <a href="~/user/notification/detail" title="Danh sách thông báo" class="more-mesg">Xem tất cả</a>
+                            </div>
+                        }
+                        else 
+                        {
+                            <a href="#" title="Thông báo" data-ripple="">
+                                <i class="fa fa-bell"></i><em id="dot-thong-bao" class="bg-red">@thongbao.getSLThongBaoChuaXem()</em>
+                            </a>
+                            <div class="dropdowns">
+                                <span>@thongbao.getSLThongBaoChuaXem() thông báo mới <a href="" title="" onclick="setXemTatCaThongBao('@maUser')">Đã xem hết</a></span>
+                                <ul class="drops-menu">
+                                    @foreach (var tb in thongbao.getThongBaoChuaXem())
+                                    {
+                                        <li>
+                                            <a href="@tb.getLienKet()" title="" onclick="setDaXemThongBao('@tb.MaTb', '@tb.MaNd')">
+                                                <figure>
+                                                    <img class="wh-35" src="~/@tb.getIconImg()" alt="" />
+                                                </figure>
+                                                <div class="mesg-meta">
+                                                    <h6>@tb.TieuDe</h6>
+                                                    <span>@tb.NoiDung</span>
+                                                    <i class="timeago" title="@tb.ThoiGian.ToString("yyyy-MM-dd'T'HH:mm:ss")">@tb.ThoiGian.ToString()</i>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    }
+                                </ul>
+                                <a href="~/user/notification/detail" title="Danh sách thông báo" class="more-mesg">Xem tất cả</a>
+                            </div>
+                        }
+                    </li>
+                    <li>
+                        <a href="#" title="Tin nhắn" data-ripple="" id="icon-tin-nhan">
+                            <i class="fa fa-commenting"></i><em id="dot-tin-nhan" class="bg-blue">0</em>
+                        </a>
+                        <div class="dropdowns">
+                            <span><span class="sl-ping-mess">0</span> tin nhắn mới <a href="" title="" onclick="setXemTatCaTinNhan('@maUser')">Đã xem hết</a></span>
+                            <ul class="drops-menu" id="menu-ping-mess"></ul>
+                            <a href="~/user/mess/detail" title="Danh sách tin nhắn" class="more-mesg">Xem tất cả</a>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="#" title="Trợ giúp" data-ripple=""><i class="fa fa-question-circle"></i></a>
+                        <div class="dropdowns helps">
+                            <span>Bạn cần giúp gì?</span>
+                            <ul class="help-drop">
+                                <li><a href="" title=""><i class="fa fa-book"></i>Lớp học và phòng thi</a></li>
+                                <li><a href="" title=""><i class="fa fa-exclamation-triangle"></i>Phản hồi và báo cáo</a></li>
+                                <li><a href="" title=""><i class="fa fa-question-circle-o"></i>Câu hỏi khác</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+                <div class="user-img">
+                    <h5>@userAccount.getFullName()</h5>
+                    <img src="@userAccount.getImageAvt()" alt="" class="wh-45" />
+                    <span class="status f-online"></span>
+                    <div class="user-setting">
+                        <ul class="log-out">
+                            <li><a href="/profile/info/@maUser" title=""><i class="ti-user"></i> Trang của tôi</a></li>
+                            @if (userAccount.MaLoai != null && userAccount.MaLoai.Equals("01"))
+                            {
+                                <li><a href="/admin/user/list" title=""><i class="ti-view-grid"></i> QL người dùng</a></li>
+                            }
+                            <li><a href="/user/manage/index" title=""><i class="ti-view-grid"></i> Trang quản trị</a></li>
+                            <li><a href="/profile/update" title=""><i class="ti-pencil-alt"></i>Chỉnh sửa thông tin</a></li>
+                            <li class="change-pass"><a href="javascript:void(0)" title=""><i class="ti-key"></i>Đổi mật khẩu</a></li>
+                            <li><a href="javascript:void(0)" title="" onclick="dangxuat()"><i class="ti-power-off"></i>Đăng xuất</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div><!-- topbar -->
+
+        <div class="chat-box hide">
+            <div class="chat-head">
+                <span id="mess-user-status" class="status f-off"></span>
+                <h6 id="mess-user-name">@userAccount.getFullName()</h6>
+                <div class="more">
+                    <div class="more-optns">
+                        <i class="ti-more-alt"></i>
+                        <ul>
+                            <li id="mess-view-info">Xem trang</li>
+                            <li>Xóa hết tin</li>
+                        </ul>
+                    </div>
+                    <span title="Tạm ẩn chat" class="temp-hide-chat" ><i class="ti-angle-down"></i></span>
+                    <span title="Tắt chat" class="close-mesage"><i class="ti-close"></i></span>
+                </div>
+            </div>
+            <div class="chat-list">
+                <ul id="mess-content">
+                </ul>
+                <div class="position-absolute w-100 text-center">
+                    <button class="mess-scroll-bottom"><i class="fa fa-angle-double-down"></i> Về cuối</button>
+                </div>
+                <form class="text-box">
+                    <textarea id="mess-new-text" maxlength="500" placeholder="Nhập tin nhắn..."></textarea>
+                    <span id="mess-send" title="Gửi" class="fa fa-send-o color-red"></span>
+                </form>
+            </div>
+        </div><!-- popup user chat -->
+        <!--Show when chat hidden-->
+        <div class="hidden-chat hide">
+            <div class="chat-head">
+                <span id="hidden-mess-user-status" class="status f-off"></span>
+                <h6 id="hidden-mess-user-name">@userAccount.getFullName()</h6>
+                <div class="more">
+                    <span title="Hiển thị chat" class="temp-show-chat"><i class="ti-angle-up"></i></span>
+                    <span title="Tắt chat" class="close-mesage"><i class="ti-close"></i></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- popup record micro -->
+        <div class="call-wraper">
+            <div class="m-live-call">
+                <span title="Dừng lắng nghe" class="close-record"><i class="ti-close"></i></span>
+                <div class="call-box">
+                    <span class="text-record"></span>
+                    <i class="ti-microphone"></i>
+                    <div class="wave">
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                    </div>
+                    <ins class="later-rmnd">Lệnh: "Dừng lại", "Làm mới".</ins>
+                </div>
+            </div>
+        </div>
+
+        <!-- Popup đổi mật khẩu -->
+        <div class="popup-wraper3">
+            <div class="popup direct-mesg">
+                <span class="popup-closed"><i class="ti-close"></i></span>
+                <div class="popup-meta">
+                    <div class="popup-head">
+                        <h5>Thay đổi mật khẩu</h5>
+                    </div>
+                    <div class="group-adding">
+                        <div class="room-group pb-0">
+                            <form id="form-change-pass" method="post">
+                                <div class="input-group mb-2 my-form">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text text-label">MK cũ</div>
+                                    </div>
+                                    <input type="password" class="form-control" id="inp-change-pass" maxlength="20" required pattern="[a-z,1-9]{1,20}" placeholder="Nhập mật khẩu...">
+                                </div>
+                                <div class="input-group mb-2 my-form">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text text-label">MK mới</div>
+                                    </div>
+                                    <input type="password" class="form-control" id="inp-change-pass-new" maxlength="20" required pattern="[a-z,1-9]{1,20}" placeholder="Nhập mật khẩu mới...">
+                                </div>
+                                <div class="input-group mb-2 my-form">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text text-label">Nhập lại</div>
+                                    </div>
+                                    <input type="password" class="form-control" id="inp-change-pass-re" maxlength="20" required pattern="[a-z,1-9]{1,20}" placeholder="Nhập lại mk mới...">
+                                </div>
+                                <div class="checkbox">
+                                    <label class="custom-rules">
+                                        <input type="checkbox" id="view-pass"><i class="check-box"></i>Hiển thị mật khẩu
+                                    </label>
+                                </div>
+                                <button type="submit" class="main-btn mt-2">Xác nhận</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @RenderBody()
+
+        <footer id="footer">
+            <div class="container d-md-flex py-4">
+                <div class="me-md-auto text-center text-md-start">
+                    <b>Triệu Nguyễn Khánh Băng</b>
+                    <br />
+                    B1809328
+                </div>
+                <div class="social-links text-center text-md-right pt-3 pt-md-0">
+                    <a href="https://instagram.com/tnk_bang" class="instagram"><i class="bx bxl-instagram"></i></a>
+                    <a href="https://fb.com/tnkbang" class="facebook"><i class="bx bxl-facebook"></i></a>
+                    <a href="https://m.me/tnkbang" class="messenger"><i class="bx bxl-messenger"></i></a>
+                    <a href="mailto:bangb1809328@student.ctu.edu.vn" class="google-plus"><i class="bx bx-mail-send"></i></a>
+                    <a href="tel:+0833229121" class="phone"><i class="bx bx-phone-call"></i></a>
+                </div>
+            </div>
+        </footer><!--Footer -->
+    </div>
+
+    <!--Xử lý file pdf-->
+    <script src="~/Template/js/pdf.js" asp-append-version="true"></script>
+
+    <!--Script xử lý chính-->
+    <script src="~/Template/js/main.min.js" asp-append-version="true"></script>
+    <script src="~/Template/js/jquery.number.min.js" asp-append-version="true"></script>
+
+    <!--Xử lý hiển thị ngày tháng-->
+    <script src="~/Template/js/customDateTime.js" asp-append-version="true"></script>
+
+    <!--Toastr thông báo-->
+    <script src="~/Template/js/toastr.js" asp-append-version="true"></script>
+
+    <!--SignalR-->
+    <script src="~/Template/js/signalr.js" asp-append-version="true"></script>
+
+    <!--Chat-->
+    <script src="~/Template/js/chat.js" asp-append-version="true"></script>
+
+    <!-- Các section có trong view -->
+    @RenderSection("ChildScript", required:false)
+    <script src="~/Template/js/script.js" asp-append-version="true"></script>
+</body>
+</html>

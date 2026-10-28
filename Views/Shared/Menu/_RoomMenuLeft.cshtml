@@ -1,0 +1,52 @@
+﻿@using DayHocTrucTuyen.Models.Entities
+@model LopHoc
+
+@{
+    NguoiDung uLogin = new NguoiDung().getNguoiDung(User.Claims.First().Value);
+}
+
+<div class="col-lg-3">
+    <aside class="sidebar static left mb-0">
+        <div class="widget">
+            <h4 class="widget-title">Quan trọng</h4>
+            <ul class="twiter-feed fav-community">
+                @if (Model.getAllPhongThi().Count() == 0)
+                {
+                    <li class="text-center">Không có gì cả !</li>
+                }
+                @foreach (PhongThi pt in Model.getAllPhongThi())
+                {
+                    <li>
+                        <i class="fa fa-link"></i> @pt.TenPhong
+                        <p class="text-right"><a href="~/courses/exam/preexam/@pt.MaPhong">Đi đến liên kết</a></p>
+                    </li>
+                }
+            </ul>
+        </div><!-- Page Community-->
+        <div class="widget stick-widget auto-mb-hide mb-3">
+            <h4 class="widget-title">Liên kết</h4>
+            <ul class="naves">
+                <li>
+                    <i class="ti-home"></i>
+                    <a href="/" title="">Trang chủ</a>
+                </li>
+                <li>
+                    <i class="ti-user"></i>
+                    <a href="~/profile/info/@uLogin.MaNd" title="">Trang cá nhân</a>
+                </li>
+                <li>
+                    <i class="ti-bell"></i>
+                    <a href="/user/notification/detail" title="">Thông báo</a>
+                </li>
+                <li>
+                    <i class="ti-comments-smiley"></i>
+                    <a href="" title="">Tin nhắn</a>
+                </li>
+                <li>
+                    <i class="ti-view-list-alt"></i>
+                    <a href="~/courses/room/list" title="">Danh sách lớp</a>
+                </li>
+            </ul>
+        </div><!-- Shortcuts -->
+    </aside>
+</div><!-- sidebar -->
