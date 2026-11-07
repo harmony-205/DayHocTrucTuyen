@@ -1,5 +1,5 @@
 using DayHocTrucTuyen.Areas.Admin.Models;
-// using DayHocTrucTuyen.Areas.User.Controllers;
+using DayHocTrucTuyen.Areas.User.Controllers;
 using DayHocTrucTuyen.Models.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -423,17 +423,18 @@ namespace DayHocTrucTuyen.Areas.Admin.Controllers
                     yc.TrangThai = 0;
                     yc.GhiChu = gc;
 
-                    //Gửi thông báo và Hoàn tiền (Sẽ tích hợp hoàn thiện ở Commit 11 & Commit 13)
+                    //Gửi thông báo (Sẽ tích hợp hoàn thiện ở Commit 13 - NotificationController)
                     /*
                     NotificationController notification = new NotificationController();
                     notification.setThongBao(yc.MaNd, "Từ chối rút tiền", 
                         "money", "Yêu cầu rút " + yc.SoTien.ToString("n0") + "VNĐ lúc " + 
                         yc.ThoiGian.ToString("g") + " bị từ chối.", "#");
+                    */
 
+                    //Hoàn tiền về tài khoản
                     ViController vinguoidung = new ViController();
                     vinguoidung.setThayDoiSoDu(yc.MaNd, true, yc.SoTien, 
                         "Hoàn tiền do yêu cầu lúc " + yc.ThoiGian.ToString("g") + " bị từ chối");
-                    */
                 }
                 db.SaveChanges();
             }
