@@ -1,5 +1,5 @@
-using DayHocTrucTuyen.Areas.Admin.Models;
-// using DayHocTrucTuyen.Areas.User.Controllers;
+﻿using DayHocTrucTuyen.Areas.Admin.Models;
+using DayHocTrucTuyen.Areas.User.Controllers;
 using DayHocTrucTuyen.Models.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -134,15 +134,13 @@ namespace DayHocTrucTuyen.Areas.Courses.Controllers
             db.PhongThis.Add(newPT);
             db.SaveChanges();
 
-            //Gửi thông báo đến tất cả thành viên thuộc lớp (Sẽ tích hợp hoàn thiện ở Commit 13 - NotificationController)
-            /*
+            //Gửi thông báo đến tất cả thành viên thuộc lớp
             NotificationController notification = new NotificationController();
             var thanhvienlop = db.HocSinhThuocLops.Where(x => x.MaLop == lop.MaLop);
             foreach (var tvl in thanhvienlop)
             {
                 notification.setThongBao(tvl.MaNd, "Bài thi mới", "exam", "Từ lớp: " + lop.TenLop, "courses/room/detail/" + lop.MaLop);
             }
-            */
 
             return Json(new { tt = true, exam = newPT.MaPhong });
         }

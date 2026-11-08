@@ -1,4 +1,4 @@
-using DayHocTrucTuyen.Areas.Admin.Models;
+﻿using DayHocTrucTuyen.Areas.Admin.Models;
 using DayHocTrucTuyen.Areas.User.Controllers;
 using DayHocTrucTuyen.Models.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -402,6 +402,7 @@ namespace DayHocTrucTuyen.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult setGiveMoney(string ma, bool tt, string gc)
         {
+            NotificationController notification = new NotificationController();
             var yc = db.YeuCauThanhToans.FirstOrDefault(x => x.MaNd == ma);
 
             if (yc != null)
@@ -410,26 +411,20 @@ namespace DayHocTrucTuyen.Areas.Admin.Controllers
                 {
                     yc.TrangThai = 2;
 
-                    //Gửi thông báo (Sẽ tích hợp hoàn thiện ở Commit 13 - NotificationController)
-                    /*
-                    NotificationController notification = new NotificationController();
+                    //Gửi thông báo
                     notification.setThongBao(yc.MaNd, "Xác nhận rút tiền", 
                         "money", "Đã chuyển " + yc.SoTien.ToString("n0") + "VNĐ về tài khoản " + 
                         yc.LoaiThanhToan + " theo yêu cầu lúc " + yc.ThoiGian.ToString("g"), "#");
-                    */
                 }
                 else
                 {
                     yc.TrangThai = 0;
                     yc.GhiChu = gc;
 
-                    //Gửi thông báo (Sẽ tích hợp hoàn thiện ở Commit 13 - NotificationController)
-                    /*
-                    NotificationController notification = new NotificationController();
+                    //Gửi thông báo
                     notification.setThongBao(yc.MaNd, "Từ chối rút tiền", 
                         "money", "Yêu cầu rút " + yc.SoTien.ToString("n0") + "VNĐ lúc " + 
                         yc.ThoiGian.ToString("g") + " bị từ chối.", "#");
-                    */
 
                     //Hoàn tiền về tài khoản
                     ViController vinguoidung = new ViController();

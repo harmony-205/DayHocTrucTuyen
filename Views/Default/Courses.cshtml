@@ -1,0 +1,36 @@
+﻿@{
+    ViewBag.Title = "Khóa Học";
+    ViewBag.KhoaHoc = "active";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Banner -->
+<div class="breadcrumbs">
+    <div class="container">
+        <h2>Khóa Học Phổ Biến</h2>
+        <p>Bạn không biết nên tham gia lớp học nào? Đừng lo lắng, chúng tôi xin giới thiệu đến bạn một số lớp học được mọi người yêu thích. Dữ liệu này được phân tích từ lịch sử tương tác trên toàn hệ thống, đảm bảo bạn sẽ tìm được lớp học bạn ưng ý từ các lớp bên dưới. Nếu bạn chưa đăng nhập thì hãy đăng nhập ngay nhé, dữ liệu sẽ chính xác hơn khi có có lịch sử tương tác của bạn.</p>
+    </div>
+</div>
+
+<!-- Search -->
+<div class="title-block search-room autocomplete">
+    <form autocomplete="off" id="form-search-room">
+        <input class="search-input" autocomplete="off" id="mySearchCourses" name="mySearchCourses" type="text" placeholder="Nhập tên lớp..." value="@ViewBag.Search">
+        <button type="submit"><i class="fa fa-search"></i></button>
+    </form>
+</div>
+
+<!-- Main -->
+<section id="courses" class="courses">
+    <div class="container" data-aos="fade-up">
+        <div class="row">
+        </div>
+    </div>
+</section>
+
+@section ChildScript{
+    <!-- Xử lý đề xuất tìm kiếm lớp học-->
+    <script src="~/Template/js/search-room.js" asp-append-version="true"></script>
+    <!-- Xử lý phân trang lớp học-->
+    <script src="~/Template/js/paging-with-scroll.js" asp-append-version="true"></script>
+}
