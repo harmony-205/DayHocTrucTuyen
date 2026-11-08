@@ -1,4 +1,4 @@
-// using DayHocTrucTuyen.Areas.User.Controllers;
+﻿using DayHocTrucTuyen.Areas.User.Controllers;
 using DayHocTrucTuyen.Models.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +26,7 @@ namespace DayHocTrucTuyen.Areas.Courses.Controllers
             newPost.NoiDung = noidung;
             newPost.TrangThai = true;
 
-            if (files != null && files.Count != 0)
+            if(files.Count != 0)
             {
                 var temp = "";
                 //Khai báo đường dẫn lưu file
@@ -36,7 +36,7 @@ namespace DayHocTrucTuyen.Areas.Courses.Controllers
                 //Nếu thư mục không có thì tạo mới
                 if (!basePathExists) Directory.CreateDirectory(basePath);
 
-                foreach (var file in files)
+                foreach(var file in files)
                 {
                     //string file_extension = Path.GetFileName(file.FileName).Substring(Path.GetFileName(file.FileName).LastIndexOf('.'));
                     var fileName = newPost.MaBai + "-" + file.FileName;
@@ -59,8 +59,7 @@ namespace DayHocTrucTuyen.Areas.Courses.Controllers
             db.BaiDangs.Add(newPost);
             db.SaveChanges();
 
-            //Gửi thông báo đến tất cả thành viên thuộc lớp (Sẽ tích hợp hoàn thiện ở Commit 13 - NotificationController)
-            /*
+            //Gửi thông báo đến tất cả thành viên thuộc lớp
             NotificationController notification = new NotificationController();
             var lop = db.LopHocs.FirstOrDefault(x => x.MaLop == malop);
             var thanhvienlop = db.HocSinhThuocLops.Where(x => x.MaLop == lop.MaLop && x.MaNd != newPost.MaNd);
@@ -68,7 +67,6 @@ namespace DayHocTrucTuyen.Areas.Courses.Controllers
             {
                 notification.setThongBao(tvl.MaNd, "Bài đăng mới", "post", "Từ lớp: " + lop.TenLop, "courses/room/detail/" + lop.MaLop);
             }
-            */
 
             return Json(new { mess = "Thành công" });
         }
@@ -188,7 +186,7 @@ namespace DayHocTrucTuyen.Areas.Courses.Controllers
             newBL.ThoiGian = DateTime.Now;
             newBL.NoiDung = nd;
 
-            if (files != null && files.Count != 0)
+            if (files.Count != 0)
             {
                 var temp = "";
                 //Khai báo đường dẫn lưu file

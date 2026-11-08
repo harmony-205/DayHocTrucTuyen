@@ -1,5 +1,5 @@
-using DayHocTrucTuyen.Areas.Admin.Models;
-// using DayHocTrucTuyen.Areas.User.Controllers;
+﻿using DayHocTrucTuyen.Areas.Admin.Models;
+using DayHocTrucTuyen.Areas.User.Controllers;
 using DayHocTrucTuyen.Models.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -299,8 +299,8 @@ namespace DayHocTrucTuyen.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult sendNoti(string maUser, string nd)
         {
-            // NotificationController notification = new NotificationController(); // Se tich hop o Commit 13
-            // notification.setThongBao(maUser, "Thông báo từ Admin","admin", nd, "");
+            NotificationController notification = new NotificationController();
+            notification.setThongBao(maUser, "Thông báo từ Admin","admin", nd, "");
 
             return Json(new { tt = true });
         }
