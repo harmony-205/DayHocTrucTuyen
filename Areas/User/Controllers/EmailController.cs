@@ -71,8 +71,8 @@ namespace DayHocTrucTuyen.Areas.User.Controllers
                     mail.Body = noidung;
                     mail.IsBodyHtml = true;
 
-                    var path = Path.Combine(Directory.GetCurrentDirectory() + "\\wwwroot\\Content\\filePost\\");
-                    mail.Attachments.Add(new Attachment(path + fileName));
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Content", "filePost");
+                    mail.Attachments.Add(new Attachment(Path.Combine(path, fileName)));
 
                     using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
                     {
@@ -94,7 +94,7 @@ namespace DayHocTrucTuyen.Areas.User.Controllers
         public string getRePass(string user, string link, string support_url)
         {
             string body = string.Empty;
-            using (StreamReader reader = new StreamReader(Directory.GetCurrentDirectory() + "\\Views\\Shared\\Email\\repass.html"))
+            using (StreamReader reader = new StreamReader(Path.Combine(Directory.GetCurrentDirectory(), "Views", "Shared", "Email", "repass.html")))
             {
                 body = reader.ReadToEnd();
             }

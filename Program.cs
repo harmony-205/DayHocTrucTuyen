@@ -1,26 +1,37 @@
 using DayHocTrucTuyen.Models;
+using DayHocTrucTuyen.Models.Entities;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddHttpContextAccessor();
+
+// Register EF Core 9 DbContext
+builder.Services.AddDbContext<DayHocTrucTuyenContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DayHocTrucTuyen")));
 
 // Add cookie authentication
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
-{
-    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
-    options.SlidingExpiration = true;
-    options.LoginPath = "/account/login";
-    options.LogoutPath = "/account/login";
-    options.AccessDeniedPath = "/access/denied";
-});
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+        options.SlidingExpiration = true;
+        options.LoginPath = "/account/login";
+        options.LogoutPath = "/account/login";
+        options.AccessDeniedPath = "/access/denied";
+        options.Cookie.HttpOnly = true;
+        options.Cookie.IsEssential = true;
+    });
 
-// Using custom authen role
+// Using custom authorization policy handler
+builder.Services.AddAuthorization();
 builder.Services.AddScoped<IAuthorizationHandler, RolesAuthorizationHandler>();
 
-// Using SignalR chat
+// Using SignalR real-time chat
 builder.Services.AddSignalR();
 
 var app = builder.Build();
@@ -33,7 +44,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-// Using custom status error
+// Using custom status code error pages (403, 404)
 app.UseStatusCodePagesWithReExecute("/error/{0}");
 
 app.UseHttpsRedirection();
@@ -41,23 +52,22 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-// Using Authen cookie
+// Authentication & Authorization middleware
 app.UseAuthentication();
-
 app.UseAuthorization();
 
-// Config Endpoint chat
+// SignalR ChatHub endpoint
 app.MapHub<ChatHub>($"/models/{nameof(ChatHub)}");
 
-// Config Map Route Areas
+// Area route mapping
 app.MapAreaControllerRoute(
     name: "MyAreas",
     areaName: "Areas",
-    pattern: "{area:exists}/{controller=Home}/{action=Index}");
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
-// Default Map Route
+// Default route mapping
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Account}/{action=Login}/{id?}");
+    pattern: "{controller=Default}/{action=Index}/{id?}");
 
 app.Run();

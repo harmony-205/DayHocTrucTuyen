@@ -31,8 +31,7 @@
     <Folder Include="Areas\Payment\Models\MoMo\" />
     <Folder Include="Areas\User\Controllers\" />
     <Folder Include="Areas\User\Views\Manage\" />
-	<Folder Include="Areas\User\Views\Manage\" />	  	  
-    <Folder Include="Areas\User\Views\Notification\" />	  	  
+    <Folder Include="Areas\User\Views\Notification\" />
     <Folder Include="Models\Entities\" />	  	  
     <Folder Include="Views\Access\" />	  	  
     <Folder Include="Views\Account\" />	  	  

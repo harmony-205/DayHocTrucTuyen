@@ -30,7 +30,7 @@ namespace DayHocTrucTuyen.Areas.Courses.Controllers
             {
                 var temp = "";
                 //Khai báo đường dẫn lưu file
-                var basePath = Path.Combine(Directory.GetCurrentDirectory() + "\\wwwroot\\Content\\filePost\\");
+                var basePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Content", "filePost");
                 bool basePathExists = Directory.Exists(basePath);
 
                 //Nếu thư mục không có thì tạo mới
@@ -109,12 +109,12 @@ namespace DayHocTrucTuyen.Areas.Courses.Controllers
                 foreach (string str in list)
                 {
                     //Khai báo đường dẫn lưu file
-                    var basePath = Path.Combine(Directory.GetCurrentDirectory() + "\\wwwroot\\Content\\filePost\\");
+                    var basePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Content", "filePost");
 
                     //Xóa file cũ khỏi server
                     if (System.IO.File.Exists(Path.Combine(basePath, str)))
                     {
-                        System.IO.File.Delete(basePath + str);
+                        System.IO.File.Delete(Path.Combine(basePath, str));
                     }
                 }
             }
@@ -190,7 +190,7 @@ namespace DayHocTrucTuyen.Areas.Courses.Controllers
             {
                 var temp = "";
                 //Khai báo đường dẫn lưu file
-                var basePath = Path.Combine(Directory.GetCurrentDirectory() + "\\wwwroot\\Content\\filePost\\");
+                var basePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Content", "filePost");
                 bool basePathExists = Directory.Exists(basePath);
 
                 //Nếu thư mục không có thì tạo mới
@@ -273,9 +273,9 @@ namespace DayHocTrucTuyen.Areas.Courses.Controllers
         //Get file
         public FileResult getFile(string fileName)
         {
-            var path = Path.Combine(Directory.GetCurrentDirectory() + "\\wwwroot\\Content\\filePost\\");
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Content", "filePost");
             var name = fileName.Substring(16);
-            byte[] bytes = System.IO.File.ReadAllBytes(path + fileName);
+            byte[] bytes = System.IO.File.ReadAllBytes(Path.Combine(path, fileName));
             return File(bytes, "application/octet-stream", name);
         }
 

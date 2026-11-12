@@ -85,7 +85,7 @@ namespace DayHocTrucTuyen.Controllers
             if (avt != null)
             {
                 //Khai báo đường dẫn lưu file
-                var basePath = Path.Combine(Directory.GetCurrentDirectory() + "\\wwwroot\\Content\\Img\\userAvt\\");
+                var basePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Content", "Img", "userAvt");
                 bool basePathExists = Directory.Exists(basePath);
 
                 //Nếu thư mục không có thì tạo mới
@@ -98,7 +98,7 @@ namespace DayHocTrucTuyen.Controllers
                 //Xóa file cũ khỏi server
                 if (!String.IsNullOrEmpty(user.ImgAvt) && System.IO.File.Exists(Path.Combine(basePath, user.ImgAvt)))
                 {
-                    System.IO.File.Delete(basePath + user.ImgAvt);
+                    System.IO.File.Delete(Path.Combine(basePath, user.ImgAvt));
                 }
 
                 //Thêm file vào server và cập nhật vào csdl
@@ -124,7 +124,7 @@ namespace DayHocTrucTuyen.Controllers
             if (bg != null)
             {
                 //Khai báo đường dẫn lưu file
-                var basePath = Path.Combine(Directory.GetCurrentDirectory() + "\\wwwroot\\Content\\Img\\userBG\\");
+                var basePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Content", "Img", "userBG");
                 bool basePathExists = Directory.Exists(basePath);
 
                 //Nếu thư mục không có thì tạo mới
@@ -137,7 +137,7 @@ namespace DayHocTrucTuyen.Controllers
                 //Xóa file cũ khỏi server
                 if (!String.IsNullOrEmpty(user.ImgBg) && System.IO.File.Exists(Path.Combine(basePath, user.ImgBg)))
                 {
-                    System.IO.File.Delete(basePath + user.ImgBg);
+                    System.IO.File.Delete(Path.Combine(basePath, user.ImgBg));
                 }
 
                 //Thêm file vào server và cập nhật vào csdl

@@ -143,7 +143,7 @@ namespace DayHocTrucTuyen.Controllers
                 if (userLogin != null && img_avt != null)
                 {
                     //Khai báo đường dẫn lưu file
-                    var basePath = Path.Combine(Directory.GetCurrentDirectory() + "\\wwwroot\\Content\\Img\\userAvt\\");
+                    var basePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Content", "Img", "userAvt");
                     bool basePathExists = Directory.Exists(basePath);
 
                     //Nếu thư mục không có thì tạo mới

@@ -106,7 +106,7 @@ namespace DayHocTrucTuyen.Areas.Courses.Controllers
             if (img != null)
             {
                 //Khai báo đường dẫn lưu file
-                var basePath = Path.Combine(Directory.GetCurrentDirectory() + "\\wwwroot\\Content\\Img\\roomCover\\");
+                var basePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Content", "Img", "roomCover");
                 bool basePathExists = Directory.Exists(basePath);
 
                 //Nếu thư mục không có thì tạo mới
@@ -197,7 +197,7 @@ namespace DayHocTrucTuyen.Areas.Courses.Controllers
             if (img != null)
             {
                 //Khai báo đường dẫn lưu file
-                var basePath = Path.Combine(Directory.GetCurrentDirectory() + "\\wwwroot\\Content\\Img\\roomCover\\");
+                var basePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Content", "Img", "roomCover");
                 bool basePathExists = Directory.Exists(basePath);
 
                 string file_extension = Path.GetFileName(img.FileName).Substring(Path.GetFileName(img.FileName).LastIndexOf('.'));
@@ -207,7 +207,7 @@ namespace DayHocTrucTuyen.Areas.Courses.Controllers
                 //Xóa file cũ khỏi server
                 if (!String.IsNullOrEmpty(update.ImgBia) && System.IO.File.Exists(Path.Combine(basePath, update.ImgBia)))
                 {
-                    System.IO.File.Delete(basePath + update.ImgBia);
+                    System.IO.File.Delete(Path.Combine(basePath, update.ImgBia));
                 }
 
                 //Thêm file vào server và cập nhật vào csdl
