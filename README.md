@@ -102,7 +102,7 @@ Dữ liệu mẫu sau khi import `./wwwroot/Content/SQL/script.sql` bao gồm s�
 
 | Vai trò | Mã ND | Email đăng nhập | Mật khẩu |
 | :--- | :--- | :--- | :--- |
-| **Admin** (`01`) | `U000001` | `trieukhanhbang123@gmail.com` | `123456` |
+| **Admin** (`01`) | `U000001` | `duongvietkp2005@gmail.com` | `123456` |
 | **Giáo viên** (`02`) | `U000002` | `linhtuyet@gmail.com` | `123456` |
 | **Giáo viên** (`02`) | `U000004` | `thuha@gmail.com` | `123456` |
 | **Giáo viên** (`02`) | `U000006` | `anhnguyet@gmail.com` | `123456` |
@@ -128,3 +128,4 @@ DayHocTrucTuyen/
 ├── Dockerfile         # Cấu hình build Docker cho .NET 9
 └── Program.cs         # Cấu hình DI, Authentication, SignalR & Middleware pipeline
 ```
+
