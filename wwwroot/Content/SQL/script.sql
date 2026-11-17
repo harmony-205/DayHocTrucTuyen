@@ -1,4 +1,4 @@
-﻿GO
+GO
 Create database DayHocTrucTuyen
 GO
 use DayHocTrucTuyen

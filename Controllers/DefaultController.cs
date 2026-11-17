@@ -1,4 +1,4 @@
-﻿using DayHocTrucTuyen.Areas.Admin.Models;
+using DayHocTrucTuyen.Areas.Admin.Models;
 using DayHocTrucTuyen.Areas.Courses.Controllers;
 using DayHocTrucTuyen.Areas.User.Controllers;
 using DayHocTrucTuyen.Models;
@@ -125,6 +125,24 @@ namespace DayHocTrucTuyen.Controllers
         //Trang liên hệ
         [AllowAnonymous]
         public IActionResult Contact()
+        {
+            return View();
+        }
+
+        //Trang thông tin giới thiệu
+        [AllowAnonymous]
+        public IActionResult About()
+        {
+            ViewBag.Courses = db.LopHocs.Count();
+            ViewBag.GV = db.NguoiDungs.Where(x => x.MaLoai == "02").Count();
+            ViewBag.HS = db.NguoiDungs.Where(x => x.MaLoai == "03").Count();
+            ViewBag.TV = db.NguoiDungs.Count();
+            return View();
+        }
+
+        //Trang sự kiện
+        [AllowAnonymous]
+        public IActionResult Events()
         {
             return View();
         }

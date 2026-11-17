@@ -1,0 +1,64 @@
+@{
+    ViewBag.Title = "Sự kiện - Dạy Học Trực Tuyến";
+    ViewBag.SuKien = "active";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<main id="main">
+    <!-- ======= Breadcrumbs ======= -->
+    <div class="breadcrumbs" data-aos="fade-in">
+        <div class="container">
+            <h2>Sự kiện & Ưu đãi</h2>
+            <p>Tham gia các sự kiện đặc biệt và nhận các phần quà hấp dẫn từ Dạy Học Trực Tuyến.</p>
+        </div>
+    </div><!-- End Breadcrumbs -->
+
+    <!-- ======= Events Section ======= -->
+    <section id="events" class="events">
+        <div class="container" data-aos="fade-up">
+            <div class="row">
+                <div class="col-md-6 d-flex align-items-stretch">
+                    <div class="card">
+                        <div class="card-img">
+                            <img src="~/Content/Img/Resources/events.jpg" alt="Quà tặng chào mừng thành viên mới">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title"><a href="~/Gift">Quà tặng chào mừng thành viên mới</a></h5>
+                            <p class="fst-italic text-center text-muted">Dành cho tất cả thành viên mới tham gia hệ thống</p>
+                            <p class="card-text">
+                                Nhận ngay phần thưởng ngẫu nhiên từ 100.000 VNĐ đến 200.000 VNĐ vào ví tài khoản khi bạn tham gia và kích hoạt tài khoản lần đầu tiên trên hệ thống.
+                            </p>
+                            <div class="text-center mt-3">
+                                @if (User.Identity != null && User.Identity.IsAuthenticated)
+                                {
+                                    <a href="~/Gift" class="btn btn-primary" style="background:#52c3ff; border:none; border-radius:50px; padding:8px 25px;">Nhận thưởng ngay</a>
+                                }
+                                else
+                                {
+                                    <a href="~/account/login?ReturnUrl=/Gift" class="btn btn-primary" style="background:#52c3ff; border:none; border-radius:50px; padding:8px 25px;">Đăng nhập để nhận quà</a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 d-flex align-items-stretch">
+                    <div class="card">
+                        <div class="card-img">
+                            <img src="~/Content/Img/Resources/photo-02.jpg" alt="Khóa học trực tuyến">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title"><a href="~/default/courses">Khám phá các khóa học mới</a></h5>
+                            <p class="fst-italic text-center text-muted">Học tập không giới hạn mỗi ngày</p>
+                            <p class="card-text">
+                                Hàng trăm lớp học tương tác trực tuyến với đa dạng chủ đề từ lập trình, thiết kế, ngoại ngữ đến kỹ năng mềm cùng các giảng viên tận tâm.
+                            </p>
+                            <div class="text-center mt-3">
+                                <a href="~/default/courses" class="btn btn-outline-info" style="border-radius:50px; padding:8px 25px;">Xem danh sách lớp</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section><!-- End Events Section -->
+</main>
