@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
@@ -39,6 +39,13 @@
     <Folder Include="Views\Profile\" />	  	  
     <Folder Include="Views\Shared\Email\" />	  	  
     <Folder Include="Views\Shared\Menu\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="DayHocTrucTuyen.Tests\**" />
+    <Content Remove="DayHocTrucTuyen.Tests\**" />
+    <EmbeddedResource Remove="DayHocTrucTuyen.Tests\**" />
+    <None Remove="DayHocTrucTuyen.Tests\**" />
   </ItemGroup>
 
 </Project>
