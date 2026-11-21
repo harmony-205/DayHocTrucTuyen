@@ -48,4 +48,7 @@
     <None Remove="DayHocTrucTuyen.Tests\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="DayHocTrucTuyen.Tests" />
+  </ItemGroup>
 </Project>

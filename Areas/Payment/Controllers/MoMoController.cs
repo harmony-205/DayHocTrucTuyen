@@ -1,4 +1,4 @@
-﻿using DayHocTrucTuyen.Areas.Payment.Models;
+using DayHocTrucTuyen.Areas.Payment.Models;
 using DayHocTrucTuyen.Areas.User.Controllers;
 using DayHocTrucTuyen.Models.Entities;
 using DayHocTrucTuyen.Models.Payment.Momo;
@@ -32,9 +32,9 @@ namespace DayHocTrucTuyen.Areas.Payment.Controllers
 
             //request params need to request to MoMo system
             string endpoint = "https://test-payment.momo.vn/v2/gateway/api/create";
-            string partnerCode = "MOMOBW8K20220903";
-            string accessKey = "jjuT3W0pPODOW7Cg";
-            string serectkey = "dJTcUi9ROvZGCakIJuFzQfBK69QaHJKh";
+            string partnerCode = "MOMO";
+            string accessKey = "F8BBA842ECF85";
+            string serectkey = "K951B6PE1waDMi640xX08PD3vg6EkVlz";
             string orderInfo = "Nạp tiền vào tài khoản";
 
             string redirectUrl = currentURL + "/user/manage/index";
@@ -106,9 +106,9 @@ namespace DayHocTrucTuyen.Areas.Payment.Controllers
 
             //request params need to request to MoMo system
             string endpoint = "https://test-payment.momo.vn/v2/gateway/api/create";
-            string partnerCode = "MOMOBW8K20220903";
-            string accessKey = "jjuT3W0pPODOW7Cg";
-            string serectkey = "dJTcUi9ROvZGCakIJuFzQfBK69QaHJKh";
+            string partnerCode = "MOMO";
+            string accessKey = "F8BBA842ECF85";
+            string serectkey = "K951B6PE1waDMi640xX08PD3vg6EkVlz";
             string orderInfo = pak.MoTa;
 
             string redirectUrl = currentURL + "/user/manage/index";

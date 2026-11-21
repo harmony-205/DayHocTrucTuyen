@@ -52,5 +52,25 @@ namespace DayHocTrucTuyen.Tests
             // Assert
             Assert.Equal(expectedClass, badgeClass);
         }
+
+        [Fact]
+        public void GetImage_WhenNull_ReturnsDefaultPath()
+        {
+            var lop = new LopHoc { ImgBia = null };
+
+            var result = lop.getImage();
+
+            Assert.Equal("/Content/Img/roomCover/cover-default.jpg", result);
+        }
+
+        [Fact]
+        public void GetImage_WhenSpecified_PrependsResourcePath()
+        {
+            var lop = new LopHoc { ImgBia = "course-123.jpg" };
+
+            var result = lop.getImage();
+
+            Assert.Equal("/Content/Img/roomCover/course-123.jpg", result);
+        }
     }
 }
