@@ -110,7 +110,7 @@ namespace DayHocTrucTuyen.Areas.User.Controllers
         public IActionResult setXemTatCaTinNhan(string maND)
         {
             var tn = db.TinNhans.Where(x => x.NguoiNhan == maND && x.TrangThai == false);
-            if (tn == null) Json(new { tt = false });
+            if (tn == null) return Json(new { tt = false });
             else
             {
                 foreach (var t in tn)

@@ -1,4 +1,4 @@
-﻿using DayHocTrucTuyen.Areas.User.Controllers;
+using DayHocTrucTuyen.Areas.User.Controllers;
 using DayHocTrucTuyen.Models;
 using DayHocTrucTuyen.Models.Entities;
 using Microsoft.AspNetCore.Authentication;
@@ -137,7 +137,11 @@ namespace DayHocTrucTuyen.Controllers
             var user = await db.NguoiDungs.FirstOrDefaultAsync(x => x.Email == email);
             if (user == null)
             {
-                await createAccount(hoten.Substring(0, hoten.LastIndexOf(' ')), hoten.Substring(hoten.LastIndexOf(' ') + 1), email, "userloginwithgoogle" + email);
+                var trimmedName = (hoten ?? "").Trim();
+                var lastSpaceIndex = trimmedName.LastIndexOf(' ');
+                var hoLot = lastSpaceIndex > 0 ? trimmedName.Substring(0, lastSpaceIndex) : "";
+                var ten = lastSpaceIndex > 0 ? trimmedName.Substring(lastSpaceIndex + 1) : (string.IsNullOrEmpty(trimmedName) ? email.Split('@')[0] : trimmedName);
+                await createAccount(hoLot, ten, email, "userloginwithgoogle" + email);
 
                 var userLogin = await db.NguoiDungs.FirstOrDefaultAsync(x => x.Email == email);
                 if (userLogin != null && img_avt != null)
@@ -220,7 +224,7 @@ namespace DayHocTrucTuyen.Controllers
             return View(model);
         }
 
-        struct userChangePass
+        class userChangePass
         {
             public string email { get; set; }
             public string token { get; set; }
@@ -238,22 +242,22 @@ namespace DayHocTrucTuyen.Controllers
             else
             {
                 var currentURL = Request.Scheme + "://" + Request.Host.Value;
-                userChangePass userChange = lstChangePass.FirstOrDefault(x => x.email == user.Email);
+                userChangePass? userChange = lstChangePass.FirstOrDefault(x => x.email == user.Email);
                 
                 //Token phải là duy nhất
                 var token = "";
                 do
                 {
                     token = StringGenerator.Alphabet(30);
-                } while (lstChangePass.FirstOrDefault(x => x.token == token).token != null);
+                } while (lstChangePass.FirstOrDefault(x => x.token == token) != null);
 
-                if (userChange.email != null)
+                if (userChange != null && userChange.email != null)
                 {
                     var timer = userChange.thoiGian.AddMinutes(30);
                     if(timer > DateTime.Now) return Json(new { tt = true, mess = "Không thể gửi yêu cầu liên tiếp trong 30 phút !" });
 
                     EmailController emailController = new EmailController();
-                    var body = emailController.getRePass(user.Ten, currentURL + "/account/resetpasswourd/" + token, currentURL + "/support");
+                    var body = emailController.getRePass(user.Ten, currentURL + "/account/resetpassword/" + token, currentURL + "/support");
 
                     userChange.thoiGian = DateTime.Now;
                     userChange.token = token;
@@ -281,7 +285,7 @@ namespace DayHocTrucTuyen.Controllers
         public IActionResult ResetPassword(string token)
         {
             var user = lstChangePass.FirstOrDefault(x => x.token == token);
-            if (string.IsNullOrEmpty(token) || user.token == null) return NotFound();
+            if (string.IsNullOrEmpty(token) || user == null || user.token == null) return NotFound();
 
             var temptoken = user.thoiGian.AddMinutes(30);
             if (temptoken < DateTime.Now) return NotFound();
@@ -300,7 +304,7 @@ namespace DayHocTrucTuyen.Controllers
                 user.MatKhau = user.mahoaMatKhau(pass);
 
                 var uchange = lstChangePass.FirstOrDefault(x => x.email == email);
-                lstChangePass.Remove(uchange);
+                if (uchange != null) lstChangePass.Remove(uchange);
 
                 db.SaveChanges();
 

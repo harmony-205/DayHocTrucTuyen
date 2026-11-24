@@ -1,4 +1,4 @@
-﻿using DayHocTrucTuyen.Areas.Admin.Models;
+using DayHocTrucTuyen.Areas.Admin.Models;
 using DayHocTrucTuyen.Areas.User.Controllers;
 using DayHocTrucTuyen.Models.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -121,7 +121,7 @@ namespace DayHocTrucTuyen.Areas.Courses.Controllers
             newPT.MaLop = lop.MaLop;
             newPT.TenPhong = ten;
             newPT.NgayTao = DateTime.Now;
-            if (matkhau != null || matkhau != "null")
+            if (matkhau != null && matkhau != "null")
             {
                 newPT.MatKhau = matkhau;
             }
@@ -152,7 +152,7 @@ namespace DayHocTrucTuyen.Areas.Courses.Controllers
             if (phongthi == null) return Json(new { tt = false });
 
             phongthi.TenPhong = ten;
-            if (matkhau != null || matkhau != "null")
+            if (matkhau != null && matkhau != "null")
             {
                 phongthi.MatKhau = matkhau;
             }
@@ -269,13 +269,15 @@ namespace DayHocTrucTuyen.Areas.Courses.Controllers
             var pt = db.PhongThis.FirstOrDefault(x => x.MaPhong == maphong && x.MatKhau == matkhau);
             if (pt == null) return Json(new { tt = false, mess = "Mật khẩu chưa chính xác!" });
 
-            var nd = db.NguoiDungs.FirstOrDefault(x => x.MaNd == User.Claims.First().Value);
+            var userId = User.Claims.First().Value;
+            var nd = db.NguoiDungs.FirstOrDefault(x => x.MaNd == userId);
             if(nd != null && nd.hasCamThi(pt.MaPhong)) return Json(new { tt = false, mess = "Bạn đã bị cấm thi đối với bài thi này!" });
+            if(pt.getSLThi(userId) >= pt.LuotThi) return Json(new { tt = false, mess = "Bạn đã hết lượt làm bài thi này!" });
 
             ThoiGianLamBai working = new ThoiGianLamBai();
-            working.MaNd = User.Claims.First().Value;
+            working.MaNd = userId;
             working.MaPhong = pt.MaPhong;
-            working.LanThu = pt.getSLThi(User.Claims.First().Value) + 1;
+            working.LanThu = pt.getSLThi(userId) + 1;
             working.BatDau = DateTime.Now;
 
             db.ThoiGianLamBais.Add(working);

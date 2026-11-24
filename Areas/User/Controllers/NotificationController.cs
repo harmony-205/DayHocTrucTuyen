@@ -1,4 +1,4 @@
-﻿using DayHocTrucTuyen.Models.Entities;
+using DayHocTrucTuyen.Models.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -42,7 +42,7 @@ namespace DayHocTrucTuyen.Areas.User.Controllers
         public IActionResult setDaXemThongBao(string maTB, string maND)
         {
             var tb = db.ThongBaos.FirstOrDefault(x => x.MaTb == maTB && x.MaNd == maND);
-            if (tb == null) Json(new { tt = false });
+            if (tb == null) return Json(new { tt = false });
 
             tb.TrangThai = true;
             db.SaveChanges();
@@ -55,7 +55,7 @@ namespace DayHocTrucTuyen.Areas.User.Controllers
         public IActionResult setXemTatCaThongBao(string maND)
         {
             var tb = db.ThongBaos.Where(x => x.MaNd == maND && x.TrangThai == false);
-            if (tb == null) Json(new { tt = false });
+            if (tb == null) return Json(new { tt = false });
 
             foreach (var t in tb)
             {

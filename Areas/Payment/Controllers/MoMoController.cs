@@ -244,7 +244,7 @@ namespace DayHocTrucTuyen.Areas.Payment.Controllers
 
                         //Thông tin giao dịch
                         lichSu.SoTien = user.money;
-                        lichSu.SoDu = vi.SoDu + user.money;
+                        lichSu.SoDu = vi.SoDu;
                     }
 
                     lichSu.ThuVao = true;

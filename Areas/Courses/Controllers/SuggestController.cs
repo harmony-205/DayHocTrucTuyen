@@ -1,4 +1,4 @@
-﻿using DayHocTrucTuyen.Models.Entities;
+using DayHocTrucTuyen.Models.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,7 +11,7 @@ namespace DayHocTrucTuyen.Areas.Courses.Controllers
     {
         DayHocTrucTuyenContext db = new DayHocTrucTuyenContext();
 
-        public struct UserRoom{
+        public class UserRoom{
             public NguoiDung User { get; set; }
             public List<LopHoc> Room { get; set; }
             public DateTime ThoiGian { get; set; }
@@ -33,15 +33,19 @@ namespace DayHocTrucTuyen.Areas.Courses.Controllers
         {
             var result = SuggestList.FirstOrDefault(x => x.User.MaNd == maNd);
 
-            if (result.User == null)
+            if (result == null || result.User == null)
             {
                 var user = db.NguoiDungs.FirstOrDefault(x => x.MaNd == maNd);
-                if (user != null) SuggestList.Add(new UserRoom
+                if (user != null)
                 {
-                    User = user,
-                    Room = setSuggest(user.MaNd),
-                    ThoiGian = DateTime.Now
-                });
+                    result = new UserRoom
+                    {
+                        User = user,
+                        Room = setSuggest(user.MaNd),
+                        ThoiGian = DateTime.Now
+                    };
+                    SuggestList.Add(result);
+                }
             }
             else if (result.ThoiGian.AddDays(1) < DateTime.Now)
             {
@@ -49,7 +53,7 @@ namespace DayHocTrucTuyen.Areas.Courses.Controllers
                 result.ThoiGian = DateTime.Now;
             }
 
-            if (result.Room == null || result.Room.Count == 0) return getSuggestAll();
+            if (result == null || result.Room == null || result.Room.Count == 0) return getSuggestAll();
             return result.Room;
         }
 

@@ -20,7 +20,7 @@ namespace DayHocTrucTuyen.Areas.Admin.Controllers
         {
             //ViewBag thể hiện trang đang được hiển thị trên layout
             ViewBag.RoomList = "active";
-
+ 
             return View();
         }
 
@@ -137,10 +137,7 @@ namespace DayHocTrucTuyen.Areas.Admin.Controllers
                 lstResult.Add(temp);
             }
 
-            //Các tham số của phân trang như sau:
-            //      đầu tiên là danh sách truyền vào phân trang
-            //      tham số thứ 2 là vị trí phân trang
-            //      tham số cuối là số lượng trang
+            
             var result = PaginatedList<dynamic>.Create(lstResult, offset ?? 0, limit ?? 10);
 
             return Json(new { total = lst.ToList().Count, totalNotFiltered = lst.ToList().Count, rows = result });

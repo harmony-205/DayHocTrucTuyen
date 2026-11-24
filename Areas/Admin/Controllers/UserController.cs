@@ -1,4 +1,4 @@
-﻿using DayHocTrucTuyen.Areas.Admin.Models;
+using DayHocTrucTuyen.Areas.Admin.Models;
 using DayHocTrucTuyen.Areas.User.Controllers;
 using DayHocTrucTuyen.Models.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -403,7 +403,7 @@ namespace DayHocTrucTuyen.Areas.Admin.Controllers
         public IActionResult setGiveMoney(string ma, bool tt, string gc)
         {
             NotificationController notification = new NotificationController();
-            var yc = db.YeuCauThanhToans.FirstOrDefault(x => x.MaNd == ma);
+            var yc = db.YeuCauThanhToans.FirstOrDefault(x => x.MaNd == ma && x.TrangThai == 1);
 
             if (yc != null)
             {

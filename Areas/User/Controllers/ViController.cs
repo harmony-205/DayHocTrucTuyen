@@ -1,4 +1,4 @@
-﻿using DayHocTrucTuyen.Models.Entities;
+using DayHocTrucTuyen.Models.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -57,9 +57,9 @@ namespace DayHocTrucTuyen.Areas.User.Controllers
                 if (congthem) vi.SoDu += sotien;
                 else
                 {
-                    //Nếu số dư lớn hơn số tiền thanh toán thì tiến hành trừ tiền
+                    //Nếu số dư lớn hơn hoặc bằng số tiền thanh toán thì tiến hành trừ tiền
                     //Ngược lại không thể trừ
-                    if (vi.SoDu > sotien)
+                    if (vi.SoDu >= sotien)
                     {
                         vi.SoDu -= sotien;
                     }

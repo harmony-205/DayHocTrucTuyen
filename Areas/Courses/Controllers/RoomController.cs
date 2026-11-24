@@ -1,4 +1,4 @@
-﻿using DayHocTrucTuyen.Areas.User.Controllers;
+using DayHocTrucTuyen.Areas.User.Controllers;
 using DayHocTrucTuyen.Models.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -264,7 +264,8 @@ namespace DayHocTrucTuyen.Areas.Courses.Controllers
                         return Json(new { tt = false });
 
                     //Thực hiện thanh toán
-                    vinguoidung.setThayDoiSoDu(maUser, false, lp.GiaTien, "Phí tham gia lớp: " + lp.TenLop);
+                    if (!vinguoidung.setThayDoiSoDu(maUser, false, lp.GiaTien, "Phí tham gia lớp: " + lp.TenLop))
+                        return Json(new { tt = false });
 
                     //Thực hiện thêm tiền vào tài khoản giáo viên
                     //Có khấu trừ 10% phí duy trì
